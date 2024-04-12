@@ -1,10 +1,21 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+//navigator imports
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import 'react-native-gesture-handler';
+
+//firebase imports
 import { db } from './firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 
+//import components
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+
+const Stack = createStackNavigator();
 export default function App() {
 
   const buttonPressed = async () => {
@@ -24,10 +35,31 @@ export default function App() {
     }
   }
 
+  const logoutClicked = () => {
+    console.log("test");
+    navigation.navigate('LoginScreen');
+  }
+
   return (
-    <View style={styles.container}>
-      <Button onPress={buttonPressed} title='Insert to database'></Button>
-    </View>
+    // <View style={styles.container}>
+    //   <Login />
+    //   <StatusBar></StatusBar>
+    // </View>
+    
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='LoginScreen'>
+        <Stack.Screen name='LoginScreen' component={Login}/>
+        <Stack.Screen name='Dashboard' component={Dashboard} 
+          options={({navigation}) => ({
+            headerLeft: null, 
+            headerRight: () => (
+              <Button title='Logout' onPress={() => navigation.navigate("LoginScreen")}/>
+            )
+          })}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+
+    
   );
 }
 
