@@ -8,36 +8,49 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 //firebase imports
-import { db } from './firebaseConfig';
+import { auth, db } from './firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 
 //import components
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
+
 const Stack = createStackNavigator();
 export default function App() {
 
-  const buttonPressed = async () => {
-    // insert into database
-    try {
-      // this code inserts into the "students" collecction
-      // addDoc() will return you a copy of the document that was inserted
-      const docRef = await addDoc(collection(db, "test"), {
-        firstname: "Mark",
-        lastname: "Grinch",
-        num: 2.5
-      })
-      alert("Data inserted, check console for output")
-      console.log(`Id of inserted document is: ${docRef.id}`)
-    } catch (err) {
+  // const buttonPressed = async () => {
+  //   // insert into database
+  //   try {
+  //     // this code inserts into the "students" collecction
+  //     // addDoc() will return you a copy of the document that was inserted
+  //     const docRef = await addDoc(collection(db, "test"), {
+  //       firstname: "Mark",
+  //       lastname: "Grinch",
+  //       num: 2.5
+  //     })
+  //     alert("Data inserted, check console for output")
+  //     console.log(`Id of inserted document is: ${docRef.id}`)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
+  const logoutClicked = async (navigation) => {
+    try{
+      if(auth.currentUser === null){
+        console.log("There is no user to logout");
+      }else{
+        await signOut(auth);
+        navigation.navigate('LoginScreen');
+        console.log("Signed Out");
+        console.log(auth);
+      }
+    }catch(err){
+      console.log("Logout Error")
       console.log(err)
     }
-  }
-
-  const logoutClicked = () => {
-    console.log("test");
-    navigation.navigate('LoginScreen');
   }
 
   return (
@@ -53,7 +66,7 @@ export default function App() {
           options={({navigation}) => ({
             headerLeft: null, 
             headerRight: () => (
-              <Button title='Logout' onPress={() => navigation.navigate("LoginScreen")}/>
+              <Button title='Logout' onPress={() => logoutClicked(navigation)}/>
             )
           })}/>
       </Stack.Navigator>

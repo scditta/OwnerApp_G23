@@ -13,8 +13,11 @@ export default function Login({navigation}) {
       const user = userCredential.user;
       console.log(user);
       console.log(user.uid);
-      alert("User Logged in");
+      //alert("User Logged in");
       navigation.navigate('Dashboard');
+      //removes the username and password input so when logged out user has to retype for security
+      //setUserName("");
+      //setPassword("");
     })
     .catch((err) => {
       const errorCode = err.code;
@@ -28,9 +31,9 @@ export default function Login({navigation}) {
     return (
       <View style={styles.container}>
         <TextInput onChangeText={setUserName} value={username} placeholder="username" keyboardType="email-address"/>
-        <TextInput onChangeText={setPassword} value={password} placeholder="password" keyboardType="default"/>
-        <Pressable>
-          <Text onPress={loginClicked}>Login</Text>
+        <TextInput secureTextEntry={true} onChangeText={setPassword} value={password} placeholder="password" keyboardType="default"/>
+        <Pressable onPress={loginClicked}>
+          <Text>Login</Text>
         </Pressable>
       </View>
     );

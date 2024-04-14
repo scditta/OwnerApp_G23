@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, TextInput, View, Text, StyleSheet } from "react-native";
 
 //navigator imports
@@ -12,6 +12,16 @@ import Manager from "./Manager";
 
 const Tab = createBottomTabNavigator();
 export default function Dashboard() {
+
+  useEffect(() => {
+    //console.log("Dashboard");
+    //console.log(auth);
+    if(auth.currentUser === null){
+      console.log("There is no login");
+    }else{
+      //console.log(auth.currentUser);
+    }
+  }, []);
 
     return (
     <Tab.Navigator initialRouteName="Listings">
