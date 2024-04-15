@@ -20,26 +20,10 @@ import Dashboard from './components/Dashboard';
 const Stack = createStackNavigator();
 export default function App() {
 
-  const logoutClicked = async (navigation) => {
-    try{
-      if(auth.currentUser === null){
-        console.log("There is no user to logout");
-      }else{
-        await signOut(auth);
-        navigation.navigate('LoginScreen');
-        console.log("Signed Out");
-        console.log(auth);
-      }
-    }catch(err){
-      console.log("Logout Error")
-      console.log(err)
-    }
-  }
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='LoginScreen'>
-        <Stack.Screen name='LoginScreen' component={Login}/>
+      <Stack.Navigator initialRouteName='Login Screen'>
+        <Stack.Screen name='Login Screen' component={Login}/>
         <Stack.Screen name='Dashboard' component={Dashboard} 
           options={({navigation}) => ({
             headerShown: false,

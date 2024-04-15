@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //firebase imports
 import { auth } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
 
 import Listings from "./Listings";
 import Manager from "./Manager";
@@ -22,6 +23,22 @@ export default function Dashboard() {
       //console.log(auth.currentUser);
     }
   }, []);
+
+  const logoutClicked = async (navigation) => {
+    try{
+      if(auth.currentUser === null){
+        console.log("There is no user to logout");
+      }else{
+        await signOut(auth);
+        navigation.navigate('LoginScreen');
+        console.log("Signed Out");
+        console.log(auth);
+      }
+    }catch(err){
+      console.log("Logout Error")
+      console.log(err)
+    }
+  }
 
     return (
     <Tab.Navigator initialRouteName="Listings">

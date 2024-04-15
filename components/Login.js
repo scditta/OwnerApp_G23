@@ -30,9 +30,9 @@ export default function Login({navigation}) {
 
     return (
       <View style={styles.container}>
-        <TextInput onChangeText={setUserName} value={username} placeholder="username" keyboardType="email-address"/>
-        <TextInput secureTextEntry={true} onChangeText={setPassword} value={password} placeholder="password" keyboardType="default"/>
-        <Pressable onPress={loginClicked}>
+        <TextInput style={styles.input} onChangeText={setUserName} value={username} placeholder="username" keyboardType="email-address"/>
+        <TextInput style={styles.input} secureTextEntry={true} onChangeText={setPassword} value={password} placeholder="password" keyboardType="default"/>
+        <Pressable onPress={loginClicked} style={styles.pressable} >
           <Text>Login</Text>
         </Pressable>
       </View>
@@ -46,4 +46,19 @@ export default function Login({navigation}) {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    input: {
+      width: 150,
+      padding: 10,
+      borderRadius: 10,
+      backgroundColor:'#e4e6e4',
+      marginBottom: 5
+    },
+    pressable: {
+      paddingHorizontal: 20, 
+      paddingVertical: 10, 
+      borderWidth:1, 
+      borderRadius:10, 
+      alignItems:'center', 
+      marginVertical: 10
+    }
   });
