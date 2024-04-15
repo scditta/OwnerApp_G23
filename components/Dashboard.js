@@ -64,7 +64,7 @@ export default function Dashboard() {
         })}/>
         <Tab.Screen name="Manager" component={Manager}
         options={({navigation}) => ({
-          headerLeft: null, 
+          headerLeft: () => <View style={{flexDirection:'row', alignItems:'center', marginHorizontal: 30}}><Image source={{uri: userData.img}} style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}} /><Text style={{alignItems:'center'}}>{userData.username}</Text></View>,
           headerRight: () => <Button title='Logout' onPress={() => logoutClicked(navigation)}/>
         })}/>
     </Tab.Navigator>
