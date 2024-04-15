@@ -21,18 +21,13 @@ export default function Dashboard() {
   useEffect(() => {
     //console.log("Dashboard");
     //console.log(auth);
-    if(auth.currentUser === null){
-      console.log("There is no login");
-    }else{
-      //console.log(auth.currentUser);
-    }
     getUserData();
   }, []);
 
   const getUserData = async () => {
     try{
       const userSnap = await getDoc(doc(db, "userdata", auth.currentUser.uid));
-      console.log(userSnap.data());
+      //console.log(userSnap.data());
       setUserData(userSnap.data());
     }catch(err){
       console.log(err);
