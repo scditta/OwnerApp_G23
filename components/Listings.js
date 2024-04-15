@@ -22,46 +22,54 @@ export default function Listings() {
   const [address, setAddress] = useState("");
 
   const [image, setImage] = useState("");
-  const [imageRef, setImageRef] = useState("");
-  const [longitude, setLong] = useState("");
-  const [latitude, setLat] = useState("");
 
-  useEffect(() => {
-
-  }, []);
 
   const submitClicked = async () =>{
 
-    //await storeImage();
     const filename = image.substring(image.lastIndexOf('/') + 1, image.length);
     const photoRef = ref(storage, filename);
-    setImageRef(filename);
-    storeImage(photoRef);
 
-    //await getGeoLocation();
+    let lat = "";
+    let long = "";
 
-    const vehcileInputs = {
-      make: make,
-      model: model,
-      year: year,
-      price: price,
-      description: description,
-      city: city,
-      address: address,
-      longitude: longitude, 
-      latitude: latitude,
-      userid: auth.currentUser.uid,
-      img: imageRef,
-      status: "CANCELED"
-    };
+    try{
+      const response = await fetch(image);
+      const blob = await response.blob();
+      await uploadBytesResumable(photoRef, blob);
 
-    //insert into database
-    try {
+      const permission = await Location.requestForegroundPermissionsAsync();
+      if (permission.status  === "granted") {
+        
+        const geocodedLocation = await Location.geocodeAsync(`${address}, ${city}`);
+        long = geocodedLocation[0].longitude;
+        lat = geocodedLocation[0].latitude;
+      } else {
+          console.log("Permission denied");
+      }
+
+      const vehcileInputs = {
+        make: make,
+        model: model,
+        year: year,
+        price: price,
+        description: description,
+        city: city,
+        address: address,
+        longitude: long, 
+        latitude: lat,
+        ownerID: auth.currentUser.uid,
+        img: filename,
+        status: "CANCELED",
+        reservationID: ""
+      };
+
+      //insert into database
       const docRef = await addDoc(collection(db, "vehicle"), vehcileInputs)
       alert("Data inserted")
       console.log(`Id of inserted document is: ${docRef.id}`)
-    } catch (err) {
-      console.log(err)
+
+    }catch(err){
+      console.log(err);
     }
   }
 
@@ -82,33 +90,7 @@ export default function Listings() {
     setImage(result.assets[0].uri);
   }
 
-  const storeImage = async (photoRef) => {
-    try{
-      const response = await fetch(image);
-      const blob = await response.blob();
-      await uploadBytesResumable(photoRef, blob);
-    }catch(err){
-      console.log(err);
-    }
-  }
-
-  const getGeoLocation = async () => {
-    try{
-      const permission = await Location.requestForegroundPermissionsAsync();
-      if (permission.status  === "granted") {
-        //alert("Permission granted!");
-        //console.log(`${address}, ${city}`);
-        const geocodedLocation = await Location.geocodeAsync(`${address}, ${city}`);
-        console.log(geocodedLocation[0]); // array of possible locations
-        setLong(geocodedLocation[0].longitude);
-        setLat(geocodedLocation[0].latitude);
-    } else {
-        console.log("Permission denied");
-    }
-    }catch(err){
-      console.log(err);
-    }
-  }
+  
 
     return (
     <View style={styles.container}>
@@ -120,7 +102,7 @@ export default function Listings() {
       <Pressable onPress={selectImage}>
         <Text>Select Image</Text>
       </Pressable>
-      <Image source={{uri: image}} style={styles.image}/>
+      {/* <Image source={{uri: image}} style={styles.image}/> */}
 
       <TextInput onChangeText={setCity} value={city} style={styles.input} keyboardType='default' placeholder="City"/>
       <TextInput onChangeText={setAddress} value={address} style={styles.input} keyboardType='default' placeholder="Address"/>
@@ -145,5 +127,5 @@ export default function Listings() {
       height:300,
       width:300,
       borderWidth:1
-  }
+    }
   });
