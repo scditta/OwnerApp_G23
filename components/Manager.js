@@ -33,7 +33,7 @@ export default function Manager() {
   useEffect(() => {
     //getUserVehicles();
     //re-renders the data when changes are made to the collection
-    onSnapshot(collection(db, "vehicle"), (snapshot) => {
+    onSnapshot(query(collection(db, "vehicle"), where("ownerID", "==", auth.currentUser.uid)), (snapshot) => {
       setUserVehicles(snapshot.docs.map(doc => ({...doc.data(), id:doc.id})));
     });
   }, []);

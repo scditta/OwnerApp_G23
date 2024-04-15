@@ -26,8 +26,7 @@ export default function App() {
         <Stack.Screen name='Login Screen' component={Login}/>
         <Stack.Screen name='Dashboard' component={Dashboard} 
           options={({navigation}) => ({
-            headerShown: false,
-            headerLeft: null
+            headerShown: false
           })}/>
       </Stack.Navigator>
     </NavigationContainer>
