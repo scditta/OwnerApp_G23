@@ -42,7 +42,7 @@ export default function Manager() {
 
   const ListItem = (props) => {
     const [user, setUser] = useState("");
-    const [vehicleImage, setVehicleImage] = useState("");
+    const [vehicleImage, setVehicleImage] = useState(null);
 
     const getUserProfile = async () => {
       try{
@@ -61,12 +61,9 @@ export default function Manager() {
       }
     }
 
-    useEffect(() => {
-      if(props.vehicle.reservationID !== ""){
-        getUserProfile();
-      }
+    const getVehicleImage = async() => {
       const pathRef = ref(storage, `gs://finalprojectbtp610.appspot.com/${props.vehicle.img}`);
-      getDownloadURL(pathRef)
+      await getDownloadURL(pathRef)
       .then((url) => {
         console.log(url);
         setVehicleImage(url);
@@ -74,20 +71,30 @@ export default function Manager() {
       ).catch((err) => {
         console.log(err);
       });
+    }
+
+    useEffect(() => {
+      //if(props.vehicle.reservationID !== ""){
+        getUserProfile();
+     //}
+      getVehicleImage();
     }, []);
 
     const cancelClick = async () => {
-      console.log(props.vehicle.id);
-      const docToUpdate = doc(db, "vehicle", props.vehicle.id);
-      const updatedValues = {
-        reservationID: "",
-        confirmationCode: "",
-        status: "CANCELED"
-      };
-      await updateDoc(docToUpdate, updatedValues);
-      alert(
-        "The vehicle booking was canceled"
-      );
+      try{
+        const docToUpdate = doc(db, "vehicle", props.vehicle.id);
+        const updatedValues = {
+          reservationID: "",
+          confirmationCode: "",
+          status: "CANCELED"
+        };
+        await updateDoc(docToUpdate, updatedValues);
+        alert(
+          "The vehicle booking was canceled"
+        );
+      }catch(err){
+        console.log(err);
+      }
     }
 
     return (

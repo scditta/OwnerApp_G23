@@ -97,7 +97,11 @@ export default function Listings() {
       <TextInput onChangeText={setMake} value={make} style={styles.input} keyboardType='default' placeholder="Make"/>
       <TextInput onChangeText={setModel} value={model} style={styles.input} keyboardType='default' placeholder="Model"/>
       <TextInput onChangeText={setYear} value={year} style={styles.input} keyboardType='numeric' placeholder="Year"/>
-      <TextInput onChangeText={setPrice} value={price} style={styles.input} keyboardType='numeric' placeholder="Price"/>
+      <View style={{flexDirection:"row"}}>
+        <Text>$</Text>
+        <TextInput onChangeText={setPrice} value={price} style={styles.input} keyboardType='numeric' placeholder="Price"/>
+        <Text> / per day</Text>
+      </View>
       <TextInput onChangeText={setDescription} value={description} style={styles.input} keyboardType='default' placeholder="Description"/>
       <Pressable onPress={selectImage}>
         <Text>Select Image</Text>
