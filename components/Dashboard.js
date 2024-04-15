@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pressable, TextInput, View, Text, StyleSheet } from "react-native";
+import { Pressable, TextInput, View, Text, StyleSheet, Button } from "react-native";
 
 //navigator imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,8 +25,20 @@ export default function Dashboard() {
 
     return (
     <Tab.Navigator initialRouteName="Listings">
-        <Tab.Screen name="Listings" component={Listings} />
-        <Tab.Screen name="Manager" component={Manager} />
+        <Tab.Screen name="Listings" component={Listings} 
+        options={({navigation}) => ({
+          headerLeft: null, 
+          headerRight: () => (
+            <Button title='Logout' onPress={() => logoutClicked(navigation)}/>
+          )
+        })}/>
+        <Tab.Screen name="Manager" component={Manager} 
+        options={({navigation}) => ({
+          headerLeft: null, 
+          headerRight: () => (
+            <Button title='Logout' onPress={() => logoutClicked(navigation)}/>
+          )
+        })}/>
     </Tab.Navigator>
     );
   }
