@@ -30,7 +30,7 @@ export default function Dashboard() {
         console.log("There is no user to logout");
       }else{
         await signOut(auth);
-        navigation.navigate('LoginScreen');
+        navigation.navigate('Login Screen');
         console.log("Signed Out");
         console.log(auth);
       }

@@ -40,12 +40,11 @@ export default function Manager() {
 
 // ------------------
 
-  const List = (props) => {
+  const ListItem = (props) => {
     const [user, setUser] = useState("");
     const [vehicleImage, setVehicleImage] = useState("");
 
     const getUserProfile = async () => {
-
       try{
         const docRef = doc(db, "userdata", props.vehicle.reservationID);
         const docSnap = await getDoc(docRef);
@@ -67,7 +66,6 @@ export default function Manager() {
         getUserProfile();
       }
       const pathRef = ref(storage, `gs://finalprojectbtp610.appspot.com/${props.vehicle.img}`);
-      //console.log("Img: ", pathRef);
       getDownloadURL(pathRef)
       .then((url) => {
         console.log(url);
@@ -134,7 +132,7 @@ export default function Manager() {
       <View style={styles.container}>
         <FlatList 
         data={userVehicles}
-        renderItem={({item}) => <List vehicle={item} />}
+        renderItem={({item}) => <ListItem vehicle={item} />}
         keyExtractor={item => item.id}
         ItemSeparatorComponent={() => {
           return <View style={styles.listItemBorder}></View>
