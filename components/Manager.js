@@ -5,7 +5,7 @@ import { Pressable, TextInput, View, Text, StyleSheet, FlatList, Image } from "r
 import { auth, db, storage } from "../firebaseConfig";
 import { collection, where, getDocs, query, doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
-import { ref } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
 
 export default function Manager() {
 
@@ -42,6 +42,7 @@ export default function Manager() {
 
   const List = (props) => {
     const [user, setUser] = useState("");
+    const [vehicleImage, setVehicleImage] = useState("");
 
     const getUserProfile = async () => {
 
@@ -65,8 +66,16 @@ export default function Manager() {
       if(props.vehicle.reservationID !== ""){
         getUserProfile();
       }
-      const pathRef = ref(storage, 'gs://finalprojectbtp610.appspot.com');
-      console.log("Img: ", pathRef);
+      const pathRef = ref(storage, `gs://finalprojectbtp610.appspot.com/${props.vehicle.img}`);
+      //console.log("Img: ", pathRef);
+      getDownloadURL(pathRef)
+      .then((url) => {
+        console.log(url);
+        setVehicleImage(url);
+      }
+      ).catch((err) => {
+        console.log(err);
+      });
     }, []);
 
     const cancelClick = async () => {
@@ -109,7 +118,7 @@ export default function Manager() {
           </View>
           {/* image goes here for far right */}
           <View>
-            <Text>Image here</Text>
+            <Image source={{uri: vehicleImage}} style={styles.image} />
           </View>
         </View>
         <View style={{alignItems:"center"}}>
