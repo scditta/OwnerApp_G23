@@ -61,11 +61,11 @@ export default function Manager() {
       }
     }
 
-    const getVehicleImage = async() => {
+    const getVehicleImage = async () => {
       const pathRef = ref(storage, `gs://finalprojectbtp610.appspot.com/${props.vehicle.img}`);
       await getDownloadURL(pathRef)
       .then((url) => {
-        console.log(url);
+        //console.log(url);
         setVehicleImage(url);
       }
       ).catch((err) => {
@@ -74,9 +74,9 @@ export default function Manager() {
     }
 
     useEffect(() => {
-      //if(props.vehicle.reservationID !== ""){
+      if(props.vehicle.reservationID !== ""){
         getUserProfile();
-     //}
+     }
       getVehicleImage();
     }, []);
 
