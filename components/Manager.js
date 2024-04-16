@@ -99,38 +99,60 @@ export default function Manager() {
 
     return (
       <View>
-        <View style={{justifyContent:"space-evenly", flexDirection:"row"}}>
-          <View style={{width: 100}}>
-            <Text>{props.vehicle.make}</Text>
-            <Text>{props.vehicle.model}</Text>
-            <Text>{props.vehicle.year}</Text>
-            <Text>{props.vehicle.description}</Text>
-            <Text>${props.vehicle.price} / per day</Text>
-            <Text>{props.vehicle.city}</Text>
-            <Text>{props.vehicle.address}</Text>
+        <View style={{justifyContent:"space-evenly"}}>
+          <View style={{alignItems: "center"}}>
+            <Image source={{uri: vehicleImage}} style={styles.vehicleimage}/>
+            {/* <View style={{justifyContent: "space-between"}}> */}
+              <View style={{flexDirection: "row"}}>
+                <Text style={{fontWeight: "bold"}}>{props.vehicle.make} {props.vehicle.model}</Text>
+                <Text> {props.vehicle.year}</Text>
+                <Text>${props.vehicle.price} / per day</Text>
+              </View>
+            {/* </View> */}
           </View>
-          {/* Profile goes here */}
-          <View>{
-            props.vehicle.reservationID === "" ? 
-            <></> 
-            : 
-            <>
-            <Text>{user.username}</Text>
-            <Image source={{uri: user.img}} style={styles.image} />
-            </>
-            }
             
-          </View>
-          {/* image goes here for far right */}
-          <View>
-            <Image source={{uri: vehicleImage}} style={styles.image} />
+            
+            <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
+              <View>
+                <Text>Description:</Text>
+                <Text>{props.vehicle.description}</Text>
+              </View>
+              <View style={{}}>
+                <Text>Location:</Text>
+                <Text>{props.vehicle.city}</Text>
+                <Text>{props.vehicle.address}</Text>
+              </View>
+            </View>
+          
+          
+          {/* Profile goes here */}
+          <View style={{backgroundColor: "#ECECEC", padding: 15}}>
+            {
+            props.vehicle.reservationID === "" ? 
+            <View style={{alignItems: "center"}}>
+              <Text style={{textAlign: "center"}}>Status: {props.vehicle.status}</Text>
+            </View>
+            : 
+            <View style={{flexDirection: "row", justifyContent:"space-evenly"}}>
+              <View>
+                <Image source={{uri: user.img}} style={styles.renterimage} />
+                <Text>{user.username}</Text>
+              </View>
+              <View>
+                <Text>Code: {props.vehicle.confirmationCode}</Text>
+                <Text>Status: {props.vehicle.status}</Text>
+              </View>
+            </View>
+            }
           </View>
         </View>
-        <View style={{alignItems:"center"}}>
-        <Pressable onPress={cancelClick}>
-          <Text>Cancel</Text>
-        </Pressable>
-      </View>
+
+        <View style={{alignItems:"center", backgroundColor: "#dc3545", paddingVertical: 10}}>
+          <Pressable style={{}} onPress={cancelClick}>
+            <Text style={{color: "#fff"}}>Cancel Booking {props.vehicle.status !== "CONFIRMED" ? <></> : `for ${user.username}`}</Text>
+          </Pressable>
+        </View>
+
     </View>
     );
   }
@@ -152,16 +174,27 @@ export default function Manager() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
+      // alignItems: 'center',
+      // justifyContent: 'center',
     },
     listItemBorder: {
       borderWidth: 1,
       borderColor: "#ccc",
-      marginVertical:10
+      // marginVertical:10
+      marginBottom: 30
     },
-    image : {
-      height:50,
-      width:50,
-      borderWidth:1
+    vehicleimage : {
+      height:100,
+      width:200,
+      objectFit: "cover",
+      borderRadius: 20
+    },
+    renterimage : {
+      width: 40, 
+      height: 40, 
+      borderRadius: 20,
+      objectFit: "cover",
+      borderRadius: 10
     }
   });

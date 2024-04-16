@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pressable, TextInput, View, Text, StyleSheet, Image } from "react-native";
+import { Pressable, TextInput, View, Text, StyleSheet, Image, Keyboard, TouchableWithoutFeedback, SafeAreaView } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as Location from 'expo-location';
@@ -93,52 +93,69 @@ export default function Listings() {
   
 
     return (
-    <View style={styles.container}>
-      <View style={{flexDirection:"row"}}>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>Make</Text>
-          <TextInput onChangeText={setMake} value={make} style={styles.input} keyboardType='default' placeholder="Make"/>
+    <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View>
+          <View style={{backgroundColor: "grey", borderRadius: 5, marginBottom: 5}}>
+            <Text style={{fontWeight: "bold", textAlign: "center", padding: 5, color: "#fff"}}>Vehicle Info:</Text>
+          </View>
+          <View style={{flexDirection:"row"}}>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Make</Text>
+              <TextInput onChangeText={setMake} value={make} style={styles.input} keyboardType='default' placeholder="ex. Ford"/>
+            </View>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Model</Text>
+              <TextInput onChangeText={setModel} value={model} style={styles.input} keyboardType='default' placeholder="ex. F-150"/>
+            </View>
+          </View>
+          <View style={{flexDirection:"row"}}>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Year</Text>
+              <TextInput onChangeText={setYear} value={year} style={styles.input} keyboardType='numeric' placeholder="ex. 1996"/>
+            </View>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Description</Text>
+              <TextInput onChangeText={setDescription} value={description} style={styles.input} keyboardType='default' placeholder="ex. Describe the car"/>
+            </View>
+          </View>
+          <View style={{flexDirection:"row", justifyContent:'center'}}>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Price</Text>
+              <View style={{flexDirection: "row"}}>
+                <Text style={{padding: 10}}>$</Text>
+                <TextInput onChangeText={setPrice} value={price} style={styles.input} keyboardType='numeric' placeholder="Price"/>
+                <Text style={{padding: 10}}>/ per day</Text>
+              </View>
+            </View>
+          </View>
+          <View>
+            <Pressable onPress={selectImage} style={styles.pressible}>
+              <Text>Select Image</Text>
+            </Pressable>
+          </View>
+          <View style={{flexDirection:"row", marginBottom: 10, justifyContent:'center'}}>
+            <Image source={{uri: image}} style={styles.image}/>
+          </View>
+          <View style={{backgroundColor: "grey", borderRadius: 5, marginBottom: 5}}>
+            <Text style={{fontWeight: "bold", textAlign: "center", padding: 5, color: "#fff"}}>Pick up Location:</Text>
+          </View>
+          <View style={{flexDirection:"row"}}>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>City</Text>
+              <TextInput onChangeText={setCity} value={city} style={styles.input} keyboardType='default' placeholder="ex. Toronto"/>
+            </View>
+            <View style={{flexDirection:"column", marginHorizontal:5}}>
+              <Text style={{fontWeight:"bold"}}>Address</Text>
+              <TextInput onChangeText={setAddress} value={address} style={styles.input} keyboardType='default' placeholder="ex. 21 Yonge St"/>
+            </View>
+          </View>
+          <Pressable onPress={submitClicked} style={styles.pressible}>
+            <Text>Submit</Text>
+          </Pressable>
         </View>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>Model</Text>
-          <TextInput onChangeText={setModel} value={model} style={styles.input} keyboardType='default' placeholder="Model"/>
-        </View>
-      </View>
-      <View style={{flexDirection:"row"}}>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>Year</Text>
-          <TextInput onChangeText={setYear} value={year} style={styles.input} keyboardType='numeric' placeholder="Year"/>
-        </View>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>Description</Text>
-          <TextInput onChangeText={setDescription} value={description} style={styles.input} keyboardType='default' placeholder="Description"/>
-        </View>
-      </View>
-      <View style={{flexDirection:"row"}}>
-        <Text style={{padding: 10}}>$</Text>
-        <TextInput onChangeText={setPrice} value={price} style={styles.input} keyboardType='numeric' placeholder="Price"/>
-        <Text style={{padding: 10}}>/ per day</Text>
-      </View>
-        <Pressable onPress={selectImage} style={styles.pressible}>
-          <Text>Select Image</Text>
-        </Pressable>
-      <View style={{flexDirection:"row", marginBottom: 10}}>
-        <Image source={{uri: image}} style={styles.image}/>
-      </View>
-      <View style={{flexDirection:"row"}}>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>City</Text>
-          <TextInput onChangeText={setCity} value={city} style={styles.input} keyboardType='default' placeholder="City"/>
-        </View>
-        <View style={{flexDirection:"column", marginHorizontal:5}}>
-          <Text>Address</Text>
-          <TextInput onChangeText={setAddress} value={address} style={styles.input} keyboardType='default' placeholder="Address"/>
-        </View>
-      </View>
-      <Pressable onPress={submitClicked} style={styles.pressible}>
-        <Text>Submit</Text>
-      </Pressable>
-    </View>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
     );
   }
 
@@ -146,15 +163,15 @@ export default function Listings() {
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'center', 
+      justifyContent: 'center'
     },
     input: {
       width: 150,
       padding: 10,
       borderRadius: 10,
       backgroundColor:'#e4e6e4',
-      marginBottom: 10
+      marginBottom: 35
     },
     image : {
       height:200,
@@ -168,6 +185,7 @@ export default function Listings() {
       borderWidth:1, 
       borderRadius:10, 
       alignItems:'center', 
-      marginVertical: 10
+      // marginVertical: 10
+      marginBottom: 10
     }
   });
