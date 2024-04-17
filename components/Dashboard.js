@@ -69,7 +69,8 @@ export default function Dashboard() {
             <MaterialCommunityIcons name="car-multiple" size={24} color="black" />
           );
         }
-      }
+      },
+      tabBarActiveTintColor: 'black'
     })
   }
     initialRouteName="Listing"
