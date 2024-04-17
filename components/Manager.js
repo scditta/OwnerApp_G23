@@ -100,29 +100,29 @@ export default function Manager() {
     return (
       <View>
         <View style={{justifyContent:"space-evenly"}}>
-          <View style={{alignItems: "center"}}>
+          <View style={{alignItems: "center", marginBottom: 20}}>
             <Image source={{uri: vehicleImage}} style={styles.vehicleimage}/>
-            {/* <View style={{justifyContent: "space-between"}}> */}
               <View style={{flexDirection: "row"}}>
-                <Text style={{fontWeight: "bold"}}>{props.vehicle.make} {props.vehicle.model}</Text>
-                <Text> {props.vehicle.year}</Text>
-                <Text>${props.vehicle.price} / per day</Text>
+                <Text style={{fontWeight: "bold", fontSize: 20}}>{props.vehicle.make} {props.vehicle.model}</Text>
+                <Text style={{fontSize: 20}}> {props.vehicle.year}</Text>
               </View>
-            {/* </View> */}
-          </View>
-            
-            
-            <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
-              <View>
-                <Text>Description:</Text>
+              <Text style={{fontSize: 15, marginBottom: 15}}>${props.vehicle.price} / per day</Text>
+
+              <View style={{alignItems: "center", marginBottom: 15}}>
+                <Text style={{fontSize: 15, textDecorationLine:"underline"}}>Pick up Location:</Text>
+                <Text>{props.vehicle.address}, {props.vehicle.city}</Text>
+              </View>
+
+              <View style={{alignItems: "center"}}>
+                <Text style={{textDecorationLine:"underline"}}>Description:</Text>
                 <Text>{props.vehicle.description}</Text>
               </View>
-              <View style={{}}>
-                <Text>Location:</Text>
-                <Text>{props.vehicle.city}</Text>
-                <Text>{props.vehicle.address}</Text>
-              </View>
-            </View>
+              
+          </View>
+            
+            {/* <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginBottom: 20}}> */}
+              
+            {/* </View> */}
           
           
           {/* Profile goes here */}
@@ -134,12 +134,13 @@ export default function Manager() {
             </View>
             : 
             <View style={{flexDirection: "row", justifyContent:"space-evenly"}}>
-              <View>
+              <Text style={{alignSelf:"center", fontWeight: "bold"}}>Booked By:</Text>
+              <View style={{alignItems:"center"}}>
                 <Image source={{uri: user.img}} style={styles.renterimage} />
-                <Text>{user.username}</Text>
+                <Text style={{fontSize: 15}}>{user.username}</Text>
               </View>
-              <View>
-                <Text>Code: {props.vehicle.confirmationCode}</Text>
+              <View style={{alignSelf: "center"}}>
+                <Text>Code: {props.vehicle.confirmationCode === "" ? "N/A" : props.vehicle.confirmationCode}</Text>
                 <Text>Status: {props.vehicle.status}</Text>
               </View>
             </View>
@@ -188,7 +189,8 @@ export default function Manager() {
       height:100,
       width:200,
       objectFit: "cover",
-      borderRadius: 20
+      borderRadius: 20,
+      marginBottom: 5
     },
     renterimage : {
       width: 40, 

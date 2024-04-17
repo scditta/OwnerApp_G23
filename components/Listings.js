@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pressable, TextInput, View, Text, StyleSheet, Image, Keyboard, TouchableWithoutFeedback, SafeAreaView } from "react-native";
+import { Pressable, TextInput, View, Text, StyleSheet, Image, Keyboard, TouchableWithoutFeedback, SafeAreaView, KeyboardAvoidingView } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as Location from 'expo-location';
@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 import { auth, db, storage } from "../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 export default function Listings() {
@@ -23,6 +24,16 @@ export default function Listings() {
 
   const [image, setImage] = useState(null);
 
+  const resetData = () =>{
+    setMake("");
+    setModel("");
+    setYear("");
+    setPrice("");
+    setDescription("");
+    setCity("");
+    setAddress("");
+    setImage(null);
+  }
 
   const submitClicked = async () =>{
 
@@ -67,7 +78,7 @@ export default function Listings() {
       const docRef = await addDoc(collection(db, "vehicle"), vehcileInputs)
       alert("Data inserted")
       console.log(`Id of inserted document is: ${docRef.id}`)
-
+      resetData();
     }catch(err){
       console.log(err);
     }
@@ -94,6 +105,7 @@ export default function Listings() {
 
     return (
     <SafeAreaView style={styles.container}>
+      <ScrollView bounces>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View>
           <View style={{backgroundColor: "grey", borderRadius: 5, marginBottom: 5}}>
@@ -155,6 +167,7 @@ export default function Listings() {
           </Pressable>
         </View>
       </TouchableWithoutFeedback>
+      </ScrollView>
     </SafeAreaView>
     );
   }
