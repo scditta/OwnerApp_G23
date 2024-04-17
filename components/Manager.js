@@ -84,14 +84,12 @@ export default function Manager() {
       try{
         const docToUpdate = doc(db, "vehicle", props.vehicle.id);
         const updatedValues = {
-          reservationID: "",
+          // reservationID: "",
           confirmationCode: "",
           status: "CANCELED"
         };
         await updateDoc(docToUpdate, updatedValues);
-        alert(
-          "The vehicle booking was canceled"
-        );
+        alert("The vehicle booking was canceled");
       }catch(err){
         console.log(err);
       }
@@ -119,13 +117,6 @@ export default function Manager() {
               </View>
               
           </View>
-            
-            {/* <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginBottom: 20}}> */}
-              
-            {/* </View> */}
-          
-          
-          {/* Profile goes here */}
           <View style={{backgroundColor: "#ECECEC", padding: 15}}>
             {
             props.vehicle.reservationID === "" ? 
@@ -160,6 +151,9 @@ export default function Manager() {
 
     return (
       <View style={styles.container}>
+        {userVehicles.length === 0?
+        <Text>You have no rentals</Text>
+      :
         <FlatList 
         data={userVehicles}
         renderItem={({item}) => <ListItem vehicle={item} />}
@@ -168,6 +162,7 @@ export default function Manager() {
           return <View style={styles.listItemBorder}></View>
         }}
         />
+      }
       </View>
     );
   }
