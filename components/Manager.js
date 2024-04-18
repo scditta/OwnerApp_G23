@@ -11,27 +11,7 @@ export default function Manager() {
 
   const [userVehicles, setUserVehicles] = useState([]);
 
-  // const getUserVehicles = async () => {
-  //   const vehicles =[];
-  //   try{
-  //     const q = query(collection(db, "vehicle"), where("userid", "==", auth.currentUser.uid));
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((currDoc) => {
-  //       //console.log(currDoc.data())
-  //       const vehicle = {
-  //         id: currDoc.id,
-  //         ...currDoc.data()
-  //       };
-  //       vehicles.push(vehicle);
-  //     });
-  //     //setUserVehicles(vehicles);
-  //   }catch(err){
-  //     console.log(err);
-  //   }
-  // }
-
   useEffect(() => {
-    //getUserVehicles();
     //re-renders the data when changes are made to the collection
     onSnapshot(query(collection(db, "vehicle"), where("ownerID", "==", auth.currentUser.uid)), (snapshot) => {
       setUserVehicles(snapshot.docs.map(doc => ({...doc.data(), id:doc.id})));
@@ -152,7 +132,7 @@ export default function Manager() {
     return (
       <View style={styles.container}>
         {userVehicles.length === 0?
-        <Text>You have no rentals</Text>
+          <Text style={{textAlign: "center", fontSize: 25, fontWeight: "bold"}}>You have no rentals</Text>
       :
         <FlatList 
         data={userVehicles}
